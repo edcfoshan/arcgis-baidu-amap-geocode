@@ -1,0 +1,32 @@
+# API 密钥文件（用户本地创建，不提交到仓库）
+config/baidu_keys.txt
+config/amap_keys.txt
+
+# Python 编译缓存
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+
+# ArcGIS 自动生成元数据
+*.pyt.xml
+
+# 测试数据
+测试地址.xlsx
+
+# 缓存数据（首次运行时自动生成）
+config/admin_divisions_level.json
+config/admin_divisions_amap_street_cache.json
+
+# VS Code 工作区文件
+*.code-workspace
+
+# Claude Code 本地配置
+.claude/
+
+# 文档（内部设计笔记，不发布）
+docs/
+
+# OS
+.DS_Store
+Thumbs.db
