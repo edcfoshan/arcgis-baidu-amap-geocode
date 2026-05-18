@@ -4,12 +4,14 @@
 
 ## 配置步骤
 
-### 1. 复制模板文件
+### 1. 打开配置文件
 
-在 `config/` 目录下，有两个模板文件：
+在 `config/` 目录下，已有两个配置文件：
 
-- `baidu_keys.example.txt` → 复制为 `baidu_keys.txt`
-- `amap_keys.example.txt` → 复制为 `amap_keys.txt`
+- `baidu_keys.txt` — 百度地图 Key
+- `amap_keys.txt` — 高德地图 Key
+
+用记事本打开对应文件，删除 Key 所在行首的 `#` 号，把示例 Key 替换成你的真实 Key 即可。
 
 ### 2. 申请 API Key
 
@@ -77,13 +79,9 @@ f6e5d4c3b2a10987f6e5d4c3b2a10987
 
 ## 常见问题
 
-### 提示 "Key 文件不存在"
+### 提示 "Key 未配置"
 
-检查 `config/` 目录下是否存在 `baidu_keys.txt` 或 `amap_keys.txt`。如果文件不存在，按照模板文件创建即可。
-
-### 提示 "Key 文件为空"
-
-检查文件中是否填写了有效的 Key，且 Key 没有被 `#` 注释掉。
+用记事本打开 `config/` 目录下的 `baidu_keys.txt` 或 `amap_keys.txt`，删除 Key 所在行首的 `#` 号，填入真实 Key 后保存即可。
 
 ### 高德返回 "USER_DAILY_QUERY_OVER_LIMIT"
 
@@ -102,6 +100,7 @@ f6e5d4c3b2a10987f6e5d4c3b2a10987
 
 ## 安全提醒
 
-- `baidu_keys.txt` 和 `amap_keys.txt` 已被 `.gitignore` 排除，不会被提交到 Git 仓库
+- 仓库中的 `baidu_keys.txt` 和 `amap_keys.txt` 仅包含注释模板，不含真实 Key
+- 本地修改后可通过 `git update-index --skip-worktree config/baidu_keys.txt` 防止误提交真实 Key
 - 请勿在公开场合分享包含真实 Key 的配置文件
 - 建议定期在控制台查看 Key 的使用情况和调用日志

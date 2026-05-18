@@ -1,6 +1,7 @@
-# API 密钥文件（用户本地创建，不提交到仓库）
-config/baidu_keys.txt
-config/amap_keys.txt
+# API 密钥文件（模板已入库，本地修改后请执行以下命令防止误提交：
+#   git update-index --skip-worktree config/baidu_keys.txt
+#   git update-index --skip-worktree config/amap_keys.txt
+# ）
 
 # Python 编译缓存
 __pycache__/

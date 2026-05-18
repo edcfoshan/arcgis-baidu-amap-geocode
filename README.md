@@ -34,9 +34,9 @@
 1. 申请 Key
    - 百度：https://lbsyun.baidu.com/apiconsole/key
    - 高德：https://console.amap.com/dev/key/app
-2. 在 `config/` 目录下创建 `baidu_keys.txt` 和 `amap_keys.txt`
-3. 每行一个 Key，可配置多个 Key 提高并发和避免配额限制
-4. 参考模板文件 `baidu_keys.example.txt` 和 `amap_keys.example.txt`
+2. 用记事本打开 `config/baidu_keys.txt` 和 `config/amap_keys.txt`
+3. 删除 Key 所在行首的 `#` 号，把示例 Key 替换成你的真实 Key
+4. 每行一个 Key，可配置多个 Key 提高并发和避免配额限制
 
 ## 坐标系说明
 

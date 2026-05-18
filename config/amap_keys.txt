@@ -1,0 +1,11 @@
+# 高德地图 API Key 配置文件
+#
+# 获取 Key：https://console.amap.com/dev/key/app
+# 建议申请「Web服务」类型 Key，并启用以下服务：
+#   地理编码、逆地理编码、POI搜索、行政区划、路径规划
+#
+# 使用方法：
+#   删除下面行首的 # 号，把 your_amap_key 替换成你的真实 Key
+#   每行一个 Key，可配多个提高速度
+#
+#your_amap_key_here

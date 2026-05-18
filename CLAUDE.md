@@ -11,8 +11,8 @@ ArcGIS Python Toolbox (`.pyt`) for geocoding with Baidu (百度) and Amap (高�
 ```
 百度高德Geocode.pyt          # ArcGIS toolbox entry point (6 tools, labeled A–F)
 ├── config/
-│   ├── baidu_keys.example.txt    # Template → user copies to baidu_keys.txt
-│   ├── amap_keys.example.txt     # Template → user copies to amap_keys.txt
+│   ├── baidu_keys.txt           # Baidu API key config (template with comments, user fills in real keys)
+│   ├── amap_keys.txt            # Amap API key config (template with comments, user fills in real keys)
 │   ├── amap_poi_categories.json  # Amap POI category code table
 │   └── admin_divisions_level.json  # Cached admin tree (generated at runtime, .gitignored)
 └── core/

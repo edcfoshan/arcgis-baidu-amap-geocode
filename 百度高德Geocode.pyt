@@ -374,9 +374,13 @@ class GeocodeToWgs84Points(object):
 
     def execute(self, parameters, messages):
         _reload_core_modules()
+        # 检查 Key 是否已配置
+        platform_text = parameters[2].valueAsText or "高德"
+        platform_map = {"百度": ["baidu"], "高德": ["amap"], "都要": ["baidu", "amap"]}
+        common.require_keys(platform_map.get(platform_text, ["amap"]))
+
         in_table = parameters[0].valueAsText or ""
         address_field = parameters[1].valueAsText or ""
-        platform_text = parameters[2].valueAsText or "高德"
         city_field = parameters[3].valueAsText or ""
         speed_level_text = parameters[4].valueAsText or "低（稳定）"
         output_wgs84 = bool(parameters[5].value)
@@ -655,9 +659,12 @@ class ReverseGeocodeToPoi(object):
 
     def execute(self, parameters, messages):
         _reload_core_modules()
+        # 检查 Key 是否已配置
+        platform_text = parameters[2].valueAsText or "高德"
+        common.require_keys(["baidu" if platform_text == "百度" else "amap"])
+
         in_points = parameters[0].valueAsText or ""
         input_coord_type = parameters[1].valueAsText or "WGS84"
-        platform_text = parameters[2].valueAsText or "高德"
         radius = int(parameters[3].value) if parameters[3].value else 1000
         poi_count = int(parameters[4].value) if parameters[4].value else 1
         poi_count = max(1, min(poi_count, 10))
@@ -852,6 +859,9 @@ class BaiduPoiInExtent(object):
 
     def execute(self, parameters, messages):
         _reload_core_modules()
+        # 百度地点检索需要百度 Key
+        common.require_keys(["baidu"])
+
         extent_type = parameters[0].valueAsText or "面图层范围"
         in_polygon = parameters[1].valueAsText
         extent = parameters[2].value
@@ -1138,6 +1148,9 @@ class AmapPoiInExtent(object):
 
     def execute(self, parameters, messages):
         _reload_core_modules()
+        # 高德 POI 检索需要高德 Key
+        common.require_keys(["amap"])
+
         extent_type = parameters[0].valueAsText or "面图层范围"
         in_polygon = parameters[1].valueAsText
         extent = parameters[2].value
@@ -1559,10 +1572,13 @@ class AdminAreaBoundaryExport(object):
 
     def execute(self, parameters, messages):
         _reload_core_modules()
+        # 行政区划导出需要对应平台 Key
+        platform_text = parameters[3].valueAsText or "高德"
+        common.require_keys(["baidu" if platform_text == "百度" else "amap"])
+
         province_choice = parameters[0].valueAsText or ""
         city_choice = parameters[1].valueAsText or ""
         county_choice = parameters[2].valueAsText or ""
-        platform_text = parameters[3].valueAsText or "\u9ad8\u5fb7"
         if platform_text not in ("\u767e\u5ea6", "\u9ad8\u5fb7"):
             platform_text = "\u9ad8\u5fb7"
         speed_level_text = parameters[4].valueAsText or "\u4f4e\uff08\u7a33\u5b9a\uff09"

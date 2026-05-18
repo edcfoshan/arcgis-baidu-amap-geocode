@@ -1,0 +1,11 @@
+# 百度地图 API Key 配置文件
+#
+# 获取 Key：https://lbsyun.baidu.com/apiconsole/key
+# 建议申请「服务端」类型 Key，并启用以下服务：
+#   地理编码、地点检索、行政区划、逆地理编码、路线规划
+#
+# 使用方法：
+#   删除下面行首的 # 号，把 your_baidu_key 替换成你的真实 Key
+#   每行一个 Key，可配多个提高速度
+#
+#your_baidu_key_here

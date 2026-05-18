@@ -26,31 +26,108 @@ _toolbox_dir = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 BAIDU_KEYS_FILE = os.path.join(_toolbox_dir, 'config', 'baidu_keys.txt')
 AMAP_KEYS_FILE = os.path.join(_toolbox_dir, 'config', 'amap_keys.txt')
 
+# 自动创建 Key 文件时使用的模板内容
+_KEY_FILE_TEMPLATES = {
+    '百度': (
+        '# 百度地图 API Key 配置文件\n'
+        '#\n'
+        '# 获取 Key：https://lbsyun.baidu.com/apiconsole/key\n'
+        '# 建议申请「服务端」类型 Key，并启用以下服务：\n'
+        '#   地理编码、地点检索、行政区划、逆地理编码、路线规划\n'
+        '#\n'
+        '# 使用方法：\n'
+        '#   删除下面行首的 # 号，把 your_baidu_key 替换成你的真实 Key\n'
+        '#   每行一个 Key，可配多个提高速度\n'
+        '#\n'
+        '#your_baidu_key_here\n'
+    ),
+    '高德': (
+        '# 高德地图 API Key 配置文件\n'
+        '#\n'
+        '# 获取 Key：https://console.amap.com/dev/key/app\n'
+        '# 建议申请「Web服务」类型 Key，并启用以下服务：\n'
+        '#   地理编码、逆地理编码、POI搜索、行政区划、路径规划\n'
+        '#\n'
+        '# 使用方法：\n'
+        '#   删除下面行首的 # 号，把 your_amap_key 替换成你的真实 Key\n'
+        '#   每行一个 Key，可配多个提高速度\n'
+        '#\n'
+        '#your_amap_key_here\n'
+    ),
+}
+
+def _create_key_file_from_template(file_path, platform_name):
+    """Key 文件不存在时自动创建带注释的模板文件，方便用户填写"""
+    template_content = _KEY_FILE_TEMPLATES.get(platform_name, "")
+    try:
+        config_dir = os.path.dirname(file_path)
+        if not os.path.exists(config_dir):
+            os.makedirs(config_dir, exist_ok=True)
+        with open(file_path, 'w', encoding='utf-8') as f:
+            f.write(template_content)
+    except Exception:
+        pass  # 创建失败不影响后续流程
+
+
 def _load_keys_from_file(file_path, platform_name):
-    """从文件加载 API Keys"""
+    """从文件加载 API Keys；文件不存在时自动创建模板"""
     if not os.path.exists(file_path):
-        return [], 'Key 文件不存在：{0}\n 请在该文件夹下创建 {1} 文件，并按行填写{2} Key。'.format(
-            file_path, os.path.basename(file_path), platform_name)
+        _create_key_file_from_template(file_path, platform_name)
+        return [], (
+            '{0} Key 未配置！\n'
+            '请按以下步骤操作：\n'
+            '1. 用记事本打开：{1}\n'
+            '2. 删除 # 号，把示例 Key 替换成你的真实 Key\n'
+            '3. 保存文件后重新运行工具\n'
+            '获取{0} Key：{_url}'
+        ).format(platform_name, file_path,
+                 _url='https://lbsyun.baidu.com/apiconsole/key' if platform_name == '百度'
+                 else 'https://console.amap.com/dev/key/app')
     try:
         with open(file_path, 'r', encoding='utf-8') as f:
             lines = f.readlines()
         keys = [line.strip() for line in lines if line.strip() and not line.strip().startswith('#')]
         if not keys:
-            return [], 'Key 文件为空：{0}\n 请在文件中填写至少一个{1} Key。'.format(file_path, platform_name)
+            return [], (
+                '{0} Key 未配置！\n'
+                '请按以下步骤操作：\n'
+                '1. 用记事本打开：{1}\n'
+                '2. 删除 # 号，把示例 Key 替换成你的真实 Key\n'
+                '3. 保存文件后重新运行工具\n'
+                '获取{0} Key：{_url}'
+            ).format(platform_name, file_path,
+                     _url='https://lbsyun.baidu.com/apiconsole/key' if platform_name == '百度'
+                     else 'https://console.amap.com/dev/key/app')
         return keys, None
     except Exception as e:
         return [], 'Key 文件读取失败：{0}\n 详细错误：{1}'.format(file_path, str(e))
 
-# 加载 Keys
+# 加载 Keys（不再抛出 RuntimeError，改为存储错误信息，让工具加载时不崩溃）
 baidu_keys, baidu_error = _load_keys_from_file(BAIDU_KEYS_FILE, '百度')
-if baidu_error:
-    raise RuntimeError(baidu_error)
 amap_keys, amap_error = _load_keys_from_file(AMAP_KEYS_FILE, '高德')
-if amap_error:
-    raise RuntimeError(amap_error)
 
 BAIDU_KEYS = baidu_keys
 AMAP_KEYS = amap_keys
+BAIDU_KEYS_LOAD_ERROR = baidu_error
+AMAP_KEYS_LOAD_ERROR = amap_error
+
+
+def require_keys(platforms):
+    """
+    检查指定平台的 Key 是否已配置，未配置时通过 arcpy 报错并中止执行。
+
+    参数：
+    - platforms: 需要检查的平台列表，如 ['baidu']、['amap']、['baidu', 'amap']
+    """
+    errors = []
+    if 'baidu' in platforms and BAIDU_KEYS_LOAD_ERROR:
+        errors.append(BAIDU_KEYS_LOAD_ERROR)
+    if 'amap' in platforms and AMAP_KEYS_LOAD_ERROR:
+        errors.append(AMAP_KEYS_LOAD_ERROR)
+    if errors:
+        for err in errors:
+            arcpy.AddError(err)
+        raise arcpy.ExecuteError('API Key 未配置，请按提示填写后重试。')
 
 # Key 轮换和延迟控制
 _baidu_index = 0
