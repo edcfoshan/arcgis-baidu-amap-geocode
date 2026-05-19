@@ -29,7 +29,18 @@ An **ArcGIS Pro** Python toolbox (`.pyt`) integrating Baidu Maps and Amap (Gaode
 
 1. Clone or download this repository to a local directory
 2. In ArcGIS Pro, open the **Catalog** pane → **Toolboxes** → right-click → **Add Toolbox**, select `百度高德Geocode.pyt`
-3. **Configure API Keys before first use** (see below)
+   ![Add Toolbox](截图/1添加工具箱.png)
+   *Right-click "Toolboxes" in the Catalog pane, select "Add Toolbox"*
+3. In the file browser dialog, select `百度高德Geocode.pyt` and click OK
+   ![Select File](截图/2点击工具箱.png)
+   *Browse to the repository directory, select the .pyt file and click OK*
+4. A third-party code confirmation dialog will appear, click **Yes** to allow
+   ![Confirm](截图/3确定运行.png)
+   *Click "Yes" to allow the toolbox code to run*
+5. The toolbox is now added. Expand it to see all 6 tools (A–F)
+   ![Tool List](截图/4工具列表.png)
+   *The toolbox contains 6 geospatial tools: admin boundary export, POI collection, geocoding, reverse geocoding, coordinate transform*
+6. **Configure API Keys before first use** (see below)
 
 ## API Key Configuration (Required for First Use)
 
@@ -99,6 +110,12 @@ The number of concurrent threads is automatically calculated based on the number
 - Amap POI batch collection automatically recursively splits into 4 sub-quadrants when a single area exceeds 25×page trigger count
 - Baidu POI Search 3.0 API **requires** a keyword (query); empty-keyword full search is not supported
 - For output GDB, use File Geodatabase (directory ending with .gdb) or check "Use temporary workspace"
+
+## Support the Author
+
+If you find this toolbox helpful, your support is appreciated!
+
+![Support](关注、赞赏码.png)
 
 ## License
 
