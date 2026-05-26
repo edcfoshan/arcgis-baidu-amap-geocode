@@ -11,8 +11,6 @@ import threading
 import time
 import arcpy
 
-__version__ = '2026-05-25'
-
 BAIDU_GEO_URL = 'https://api.map.baidu.com/geocoding/v3/'
 AMAP_GEO_URL = 'https://restapi.amap.com/v3/geocode/geo'
 AMAP_POI_POLYGON_URL = 'https://restapi.amap.com/v3/place/polygon'
