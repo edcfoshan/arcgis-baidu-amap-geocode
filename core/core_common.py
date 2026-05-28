@@ -4,7 +4,7 @@
 
 此模块被 core_address_geocode.py 和 core_poi_search.py 共享使用
 """
-__version__ = '2026-05-25'
+__version__ = '1.3'
 import math
 import os
 import threading
